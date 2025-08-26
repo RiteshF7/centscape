@@ -1,0 +1,41 @@
+{
+  "name": "centscape-backend",
+  "version": "1.0.0",
+  "description": "Backend server for extracting metadata from URLs",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "set NODE_ENV=production&& node dist/index.js",
+    "dev": "set NODE_ENV=development&& ts-node-dev --respawn --transpile-only --project tsconfig.json src/index.ts",
+    "start:dev": "set NODE_ENV=development&& node dist/index.js",
+    "start:prod": "set NODE_ENV=production&& node dist/index.js"
+  },
+  "keywords": [
+    "metadata",
+    "preview",
+    "scraping",
+    "express",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@types/qrcode": "^1.5.5",
+    "axios": "^1.11.0",
+    "centscape-root": "file:..",
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.35",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}

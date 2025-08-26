@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "install-all": "npm --prefix backend install && npm --prefix frontend install",
+    "build-backend": "npm --prefix backend run build",
+    "build-frontend": "npm --prefix frontend run build",
+    "build-all": "npm run build-backend && npm run build-frontend",
+    "start-backend": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only --project backend/tsconfig.json backend/src/index.ts",
+    "start": "npm run start-backend && npm run start-frontend",
+    "start-web": "npm-run-all start-backend \"start-frontend-web\"",
+    "start-android": "npm-run-all start-backend \"start-frontend-android\"",
+    "start-ios": "npm-run-all start-backend \"start-frontend-ios\"",
+    "dev-web": "npm-run-all start-backend \"start-frontend-web\"",
+    "dev-android": "npm-run-all start-backend \"start-frontend-android\"",
+    "dev-ios": "npm-run-all start-backend \"start-frontend-ios\"",
+    "start-frontend-web": "npm --prefix frontend run web",
+    "start-frontend-android": "npm --prefix frontend run android",
+    "start-frontend-ios": "npm --prefix frontend run ios",
+    "start-frontend": "npm --prefix frontend run start"
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0",
+    "ts-node-dev": "^2.0.0",
+    "npm-run-all": "^4.1.5"
+  }
+}
