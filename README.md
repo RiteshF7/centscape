@@ -27,33 +27,41 @@ Centscape is a mobile application that allows users to:
 
 ## Screenshots
 
-### Configuration Screen
-<img src="screenshots/01-config-screen.jpg" width="300" alt="Configuration Screen">
-*Server configuration and connection testing interface*
+### App Flow Overview
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin: 20px 0;">
+  <div style="text-align: center;">
+    <img src="screenshots/01-config-screen.jpg" width="150" alt="Configuration Screen">
+    <p style="font-size: 12px; margin-top: 8px;"><strong>1. Configuration</strong><br>Server setup & connection</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="screenshots/02-add-url-screen.jpg" width="150" alt="Add URL Screen">
+    <p style="font-size: 12px; margin-top: 8px;"><strong>2. Add URL</strong><br>Enter product URLs</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="screenshots/03-product-preview.jpg" width="150" alt="Product Preview">
+    <p style="font-size: 12px; margin-top: 8px;"><strong>3. Product Preview</strong><br>Metadata extraction</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="screenshots/05-success-message.jpg" width="150" alt="Success Message">
+    <p style="font-size: 12px; margin-top: 8px;"><strong>4. Success</strong><br>Added to wishlist</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="screenshots/04-wishlist-screen.jpg" width="150" alt="Wishlist Screen">
+    <p style="font-size: 12px; margin-top: 8px;"><strong>5. Wishlist</strong><br>Manage saved items</p>
+  </div>
+</div>
 
-### Add URL Screen
-<img src="screenshots/02-add-url-screen.jpg" width="300" alt="Add URL Screen">
-*Main home screen for entering product URLs*
-
-### Product Preview
-<img src="screenshots/03-product-preview.jpg" width="300" alt="Product Preview">
-*Product metadata extraction and preview*
-
-### Wishlist Management
-<img src="screenshots/04-wishlist-screen.jpg" width="300" alt="Wishlist Screen">
-*Wishlist items with product information*
-
-### Success Message
-<img src="screenshots/05-success-message.jpg" width="300" alt="Success Message">
-*Confirmation when product is added to wishlist*
-
-### Deep Link Testing
-<img src="screenshots/06-deep-link-test.jpg" width="300" alt="Deep Link Test">
-*Testing deep link functionality in browser*
-
-### Backend Console
-<img src="screenshots/07-backend-console.jpg" width="300" alt="Backend Console">
-*Server console showing available IP addresses and endpoints*
+### Development & Testing
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin: 20px 0;">
+  <div style="text-align: center;">
+    <img src="screenshots/06-deep-link-test.jpg" width="150" alt="Deep Link Test">
+    <p style="font-size: 12px; margin-top: 8px;"><strong>Deep Link Testing</strong><br>Browser integration</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="screenshots/07-backend-console.jpg" width="150" alt="Backend Console">
+    <p style="font-size: 12px; margin-top: 8px;"><strong>Backend Console</strong><br>Server status & IP</p>
+  </div>
+</div>
 
 ## Architecture
 
