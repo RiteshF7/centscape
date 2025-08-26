@@ -9,11 +9,17 @@ export default function AddRoute() {
     console.log('🔗 Deep Link: Add route accessed', { url });
     
     if (url) {
-      console.log('🔗 Deep Link: URL found, redirecting to addProduct', { url });
-      // Redirect to addProduct with the URL parameter
+      // Decode the URL parameter to handle URL encoding
+      const decodedUrl = decodeURIComponent(url);
+      console.log('🔗 Deep Link: URL found, redirecting to addProduct', { 
+        originalUrl: url, 
+        decodedUrl 
+      });
+      
+      // Redirect to addProduct with the decoded URL parameter
       router.replace({
         pathname: '/addProduct',
-        params: { url }
+        params: { url: decodedUrl }
       });
     } else {
       console.log('🔗 Deep Link: No URL found, redirecting to addURL');

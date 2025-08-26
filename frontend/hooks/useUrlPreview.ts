@@ -19,6 +19,14 @@ export const useUrlPreview = (url: string | null): UseUrlPreviewReturn => {
       return;
     }
 
+    // Validate that we're not trying to process a deep link URL
+    if (targetUrl.startsWith('centscape://')) {
+      console.error('❌ useUrlPreview: Attempted to process deep link URL', { targetUrl });
+      setError('Invalid URL: Deep link URLs cannot be processed. Please use the actual product URL.');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 

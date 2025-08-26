@@ -21,6 +21,12 @@ export class PreviewService {
   public async fetchPreview(url: string, rawHtml?: string): Promise<UrlPreview> {
     console.log('🔍 PreviewService: Starting preview fetch', { url, hasRawHtml: !!rawHtml });
     
+    // Validate that we're not trying to process a deep link URL
+    if (url && url.startsWith('centscape://')) {
+      console.error('❌ PreviewService: Attempted to process deep link URL', { url });
+      throw new Error('Cannot process deep link URLs. Please extract the actual product URL first.');
+    }
+    
     try {
       // Only include fields that have actual values
       const requestBody: PreviewRequest = {};

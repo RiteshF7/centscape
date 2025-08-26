@@ -5,7 +5,6 @@ import rateLimit from 'express-rate-limit';
 import path from 'path';
 import axios from 'axios';
 import os from 'os';
-import QRCode from 'qrcode';
 
 import { MetadataExtractor } from './services/MetadataExtractor';
 import { UrlNormalizer } from './services/UrlNormalizer';
@@ -109,43 +108,19 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Request logging middleware
+// Simple request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
-  const requestId = Math.random().toString(36).substring(7);
   
   // Log incoming request
-  console.log(`📥 [${requestId}] ${req.method} ${req.path} - ${req.ip}`);
-  console.log(`📋 [${requestId}] Headers:`, {
-    'User-Agent': req.get('User-Agent'),
-    'Content-Type': req.get('Content-Type'),
-    'Accept': req.get('Accept'),
-    'Origin': req.get('Origin'),
-    'Referer': req.get('Referer')
-  });
-  
-  if (req.body && Object.keys(req.body).length > 0) {
-    console.log(`📦 [${requestId}] Request Body:`, JSON.stringify(req.body, null, 2));
-  }
-  
-  if (req.query && Object.keys(req.query).length > 0) {
-    console.log(`🔍 [${requestId}] Query Parameters:`, JSON.stringify(req.query, null, 2));
-  }
+  console.log(`📥 ${req.method} ${req.path} - ${req.ip}`);
   
   // Override res.json to log response
   const originalJson = res.json;
   res.json = function(data) {
     const duration = Date.now() - start;
-    console.log(`📤 [${requestId}] Response (${duration}ms):`, JSON.stringify(data, null, 2));
-    console.log(`✅ [${requestId}] ${req.method} ${req.path} - ${res.statusCode} (${duration}ms)`);
+    console.log(`📤 ${req.method} ${req.path} - ${res.statusCode} (${duration}ms)`);
     return originalJson.call(this, data);
-  };
-  
-  // Override res.status to capture status code
-  const originalStatus = res.status;
-  res.status = function(code) {
-    console.log(`📊 [${requestId}] Status Code: ${code}`);
-    return originalStatus.call(this, code);
   };
   
   next();
@@ -178,19 +153,14 @@ app.post('/normalize-url', (req, res) => {
   try {
     const { url } = req.body;
     
-    console.log('🔗 URL Normalization Request:', { url });
-    
     if (!url) {
-      console.log('❌ Missing URL in request');
       return res.status(400).json(createResponse(false, null, 'URL is required', 'MISSING_URL'));
     }
     
     const normalized = UrlNormalizer.normalize(url);
-    console.log('✅ URL Normalization Result:', normalized);
     res.json(createResponse(true, normalized));
     
   } catch (error: any) {
-    console.error('❌ URL Normalization Error:', error);
     handleError(res, error, 'URL normalization failed', 'NORMALIZATION_ERROR');
   }
 });
@@ -200,37 +170,21 @@ app.post('/extract-metadata', async (req, res) => {
   try {
     const { url } = req.body;
     
-    console.log('🔍 Metadata Extraction Request:', { url });
-    
     if (!url) {
-      console.log('❌ Missing URL in metadata extraction request');
       return res.status(400).json(createResponse(false, null, 'URL is required', 'MISSING_URL'));
     }
     
     // Validate URL
     if (!UrlNormalizer.isValidUrl(url)) {
-      console.log('❌ Invalid URL provided:', url);
       return res.status(400).json(createResponse(false, null, 'Invalid URL provided', 'INVALID_URL'));
     }
     
     // Normalize URL first
     const normalized = UrlNormalizer.normalize(url);
-    console.log('🔗 URL Normalization:', {
-      original: normalized.original,
-      normalized: normalized.normalized,
-      cleaned: normalized.cleaned
-    });
     
     // Extract metadata using normalized URL
-    console.log('⏳ Starting metadata extraction for:', normalized.normalized);
     const extractor = new MetadataExtractor({ timeout: 15000 });
     const metadata = await extractor.extractMetadata(normalized.normalized);
-    console.log('✅ Metadata extraction completed:', {
-      title: metadata.resolved.title,
-      price: metadata.resolved.price,
-      image: metadata.resolved.image ? 'Found' : 'Not found',
-      siteName: metadata.resolved.siteName
-    });
     
     // Add URL transformation info
     const response = {
@@ -247,10 +201,7 @@ app.post('/extract-metadata', async (req, res) => {
     res.json(createResponse(true, response));
     
   } catch (error: any) {
-    console.error('❌ Metadata extraction error:', error);
-    
     if (error.message.includes('Failed to fetch')) {
-      console.log('❌ Fetch failed - site may be blocking requests');
       return res.status(400).json(createResponse(false, null, 'Failed to fetch URL - site may be blocking requests', 'FETCH_FAILED'));
     }
     
@@ -263,20 +214,15 @@ app.post('/preview', async (req, res) => {
   try {
     const { url, raw_html } = req.body;
     
-    console.log('👁️ Preview Request:', { url, hasRawHtml: !!raw_html });
-    
     if (!url && !raw_html) {
-      console.log('❌ Missing content in preview request');
       return res.status(400).json(createResponse(false, null, 'Either url or raw_html must be provided', 'MISSING_CONTENT'));
     }
     
     if (raw_html) {
-      console.log('❌ Raw HTML processing not implemented');
       return res.status(400).json(createResponse(false, null, 'Raw HTML processing not implemented yet', 'NOT_IMPLEMENTED'));
     }
     
     // Handle URL case by redirecting to new endpoint
-    console.log('⏳ Processing URL in preview endpoint:', url);
     const normalized = UrlNormalizer.normalize(url);
     const extractor = new MetadataExtractor({ timeout: 15000 });
     const metadata = await extractor.extractMetadata(normalized.normalized);
@@ -291,17 +237,9 @@ app.post('/preview', async (req, res) => {
       sourceUrl: normalized.normalized
     };
     
-    console.log('✅ Preview response formatted:', {
-      title: response.title,
-      hasImage: !!response.image,
-      hasPrice: !!response.price,
-      siteName: response.siteName
-    });
-    
     res.json(response);
     
   } catch (error: any) {
-    console.error('❌ Preview endpoint error:', error);
     handleError(res, error, 'Preview endpoint error', 'INTERNAL_ERROR');
   }
 });
@@ -314,8 +252,6 @@ app.get('/proxy-image', async (req, res) => {
     if (!url || typeof url !== 'string') {
       return res.status(400).json(createResponse(false, null, 'Image URL is required', 'MISSING_IMAGE_URL'));
     }
-    
-    console.log(`🖼️ Proxying image: ${url}`);
     
     // Validate URL
     if (!UrlNormalizer.isValidUrl(url)) {
@@ -341,34 +277,11 @@ app.get('/proxy-image', async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     
-    console.log(`✅ Image proxied successfully: ${url}`);
-    
     // Stream the image
     response.data.pipe(res);
     
   } catch (error: any) {
-    console.error('❌ Image proxy error:', error.message);
     res.status(500).json(createResponse(false, null, 'Failed to proxy image', 'PROXY_ERROR'));
-  }
-});
-
-// QR Code endpoint
-app.get('/qr-code', async (req, res) => {
-  try {
-    const { baseurl } = req.query;
-    if (!baseurl || typeof baseurl !== 'string') {
-      return res.status(400).json(createResponse(false, null, 'Base URL is required for QR code generation', 'MISSING_BASE_URL'));
-    }
-
-    const qrData = JSON.stringify({ baseurl });
-    const qrCode = await QRCode.toDataURL(qrData);
-
-    res.json(createResponse(true, {
-      qrCode,
-      qrData
-    }));
-  } catch (error: any) {
-    handleError(res, error, 'QR Code generation error', 'QR_CODE_ERROR');
   }
 });
 
@@ -413,67 +326,8 @@ const getNetworkInterfaces = () => {
   return interfaces;
 };
 
-const generateQRCodeData = async (url: string) => {
-  const qrData = JSON.stringify({ baseurl: url });
-  try {
-    const qrCodeDataUrl = await QRCode.toDataURL(qrData, { 
-      errorCorrectionLevel: 'M',
-      type: 'image/png',
-      margin: 1,
-      color: {
-        dark: '#000000',
-        light: '#FFFFFF'
-      }
-    });
-    return { qrData, qrCodeDataUrl };
-  } catch (err) {
-    console.log(`❌ QR Code generation failed: ${err}`);
-    return { qrData, qrCodeDataUrl: null };
-  }
-};
-
-const generateASCIIQRCode = (data: string) => {
-  const qrSize = 21;
-  const qr = Array(qrSize).fill(null).map(() => Array(qrSize).fill(' '));
-  
-  // Add finder patterns
-  for (let i = 0; i < 7; i++) {
-    for (let j = 0; j < 7; j++) {
-      if ((i === 0 || i === 6 || j === 0 || j === 6) || 
-          (i >= 2 && i <= 4 && j >= 2 && j <= 4)) {
-        qr[i][j] = '█';
-        qr[i][qrSize-1-j] = '█';
-        qr[qrSize-1-i][j] = '█';
-      }
-    }
-  }
-  
-  // Add alignment pattern
-  for (let i = qrSize-9; i < qrSize-4; i++) {
-    for (let j = qrSize-9; j < qrSize-4; j++) {
-      if ((i === qrSize-9 || i === qrSize-5 || j === qrSize-9 || j === qrSize-5) || 
-          (i === qrSize-7 && j === qrSize-7)) {
-        qr[i][j] = '█';
-      }
-    }
-  }
-  
-  // Add data representation
-  let dataIndex = 0;
-  for (let i = 7; i < qrSize-7; i += 2) {
-    for (let j = 7; j < qrSize-7; j += 2) {
-      if (dataIndex < data.length) {
-        qr[i][j] = data.charCodeAt(dataIndex) % 2 === 0 ? '█' : ' ';
-        dataIndex++;
-      }
-    }
-  }
-  
-  return qr.map(row => row.join(''));
-};
-
 // Start server
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`🚀 Centscape Backend Server v${VERSION.toString()}`);
   console.log(`📍 Environment: ${NODE_ENV}`);
   console.log(`🔧 Debug mode: ${currentConfig.debug}`);
@@ -481,34 +335,18 @@ app.listen(PORT, async () => {
   
   const networkUrls = getNetworkInterfaces();
   
-  console.log(`🔗 Local URLs:`);
+  console.log(`🔗 Available URLs:`);
   console.log(`   • Localhost: http://localhost:${PORT}`);
   
-  // Display network IPs and generate QR codes
-  for (const networkUrl of networkUrls) {
-    console.log(`   • Network: ${networkUrl}`);
-    
-    const { qrData, qrCodeDataUrl } = await generateQRCodeData(networkUrl);
-    console.log(`   📱 QR Code Data: ${qrData}`);
-    
-    if (qrCodeDataUrl) {
-      console.log(`   📱 QR Code Data URL: ${qrCodeDataUrl.substring(0, 50)}...`);
-      console.log(`   🔗 QR Code Endpoint: ${networkUrl}/qr-code?baseurl=${encodeURIComponent(networkUrl)}`);
-    }
-    
-    // Generate ASCII QR code
-    console.log(`   📱 QR Code (ASCII):`);
-    const asciiQR = generateASCIIQRCode(qrData);
-    asciiQR.forEach(line => console.log(`      ${line}`));
-  }
+  // Display network IPs
+  networkUrls.forEach(url => {
+    console.log(`   • Network: ${url}`);
+  });
   
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
   console.log(`📋 Version info: http://localhost:${PORT}/version`);
-  console.log(`🔗 URL normalization: http://localhost:${PORT}/normalize-url`);
+  console.log(`🔗 Server info: http://localhost:${PORT}/server-info`);
   console.log(`🔍 Metadata extraction: http://localhost:${PORT}/extract-metadata`);
-  console.log(`🧪 Testing interface: http://localhost:${PORT}/`);
-  console.log(`📱 Server info (JSON): http://localhost:${PORT}/server-info`);
-  console.log(`🔗 QR Code generator: http://localhost:${PORT}/qr-code?baseurl=http://localhost:${PORT}`);
 });
 
 export default app;
