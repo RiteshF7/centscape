@@ -555,6 +555,78 @@ const ConfigScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
 
+          {/* Deep Link Testing Section */}
+          <View style={{
+            backgroundColor: '#0f1b14',
+            borderRadius: 16,
+            padding: 24,
+            borderWidth: 1,
+            borderColor: '#374151',
+            marginBottom: 24,
+          }}>
+            <Text style={{
+              fontSize: 18,
+              fontWeight: '600',
+              color: '#ffffff',
+              marginBottom: 20,
+            }}>
+              Test Deep Links
+            </Text>
+            
+            <Text style={{
+              fontSize: 14,
+              color: '#a1a1aa',
+              marginBottom: 16,
+              lineHeight: 20,
+            }}>
+              Test your deep link functionality:
+            </Text>
+            
+            <View style={{
+              backgroundColor: '#1a2922',
+              borderRadius: 8,
+              padding: 12,
+              marginBottom: 16,
+            }}>
+              <Text style={{
+                fontSize: 12,
+                color: '#00ff94',
+                fontFamily: 'monospace',
+              }}>
+                centscape://add?url=https://www.amazon.com/dp/B08N5WRWNW
+              </Text>
+            </View>
+            
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#00ff94',
+                borderRadius: 8,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: 12,
+                paddingHorizontal: 20,
+              }}
+              onPress={() => {
+                router.push({
+                  pathname: '/addProduct',
+                  params: { url: 'https://www.amazon.com/dp/B08N5WRWNW' }
+                });
+              }}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="link" size={16} color="#000000" />
+              <Text style={{
+                color: '#000000',
+                fontSize: 14,
+                fontWeight: '600',
+                marginLeft: 8,
+              }}>
+                Test Deep Link
+              </Text>
+            </TouchableOpacity>
+          </View>
+
           {/* Proceed to App Button */}
           {isConnected && (
             <TouchableOpacity

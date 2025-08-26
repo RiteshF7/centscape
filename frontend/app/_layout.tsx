@@ -54,6 +54,13 @@ const RootLayout: React.FC = () => {
           }}
         />
         <Stack.Screen 
+          name="add"
+          options={{
+            headerShown: false,
+            animation: 'none',
+          }}
+        />
+        <Stack.Screen 
           name="addProduct"
           options={{
             headerShown: false,
