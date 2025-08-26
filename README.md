@@ -28,31 +28,31 @@ Centscape is a mobile application that allows users to:
 ## Screenshots
 
 ### Configuration Screen
-![Configuration Screen](screenshots/01-config-screen.jpg)
+<img src="screenshots/01-config-screen.jpg" width="300" alt="Configuration Screen">
 *Server configuration and connection testing interface*
 
 ### Add URL Screen
-![Add URL Screen](screenshots/02-add-url-screen.jpg)
+<img src="screenshots/02-add-url-screen.jpg" width="300" alt="Add URL Screen">
 *Main home screen for entering product URLs*
 
 ### Product Preview
-![Product Preview](screenshots/03-product-preview.jpg)
+<img src="screenshots/03-product-preview.jpg" width="300" alt="Product Preview">
 *Product metadata extraction and preview*
 
 ### Wishlist Management
-![Wishlist Screen](screenshots/04-wishlist-screen.jpg)
+<img src="screenshots/04-wishlist-screen.jpg" width="300" alt="Wishlist Screen">
 *Wishlist items with product information*
 
 ### Success Message
-![Success Message](screenshots/05-success-message.jpg)
+<img src="screenshots/05-success-message.jpg" width="300" alt="Success Message">
 *Confirmation when product is added to wishlist*
 
 ### Deep Link Testing
-![Deep Link Test](screenshots/06-deep-link-test.jpg)
+<img src="screenshots/06-deep-link-test.jpg" width="300" alt="Deep Link Test">
 *Testing deep link functionality in browser*
 
 ### Backend Console
-![Backend Console](screenshots/07-backend-console.jpg)
+<img src="screenshots/07-backend-console.jpg" width="300" alt="Backend Console">
 *Server console showing available IP addresses and endpoints*
 
 ## Architecture
