@@ -1,10 +1,11 @@
-# 🛒 Centscape - Smart Wishlist Management
+# Centscape - Smart Wishlist Management
 
 A React Native mobile application with Node.js backend for intelligent product wishlist management with deep linking capabilities.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Project Overview](#project-overview)
+- [Screenshots](#screenshots)
 - [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Engineering Trade-offs](#engineering-trade-offs)
@@ -15,7 +16,7 @@ A React Native mobile application with Node.js backend for intelligent product w
 - [Development](#development)
 - [AI Assistance Disclosure](#ai-assistance-disclosure)
 
-## 🎯 Project Overview
+## Project Overview
 
 Centscape is a mobile application that allows users to:
 - **Add products** to wishlist via deep links
@@ -24,7 +25,37 @@ Centscape is a mobile application that allows users to:
 - **Configure server settings** for backend connectivity
 - **Cross-platform support** (Android/iOS)
 
-## 🏗️ Architecture
+## Screenshots
+
+### Configuration Screen
+![Configuration Screen](screenshots/01-config-screen.jpg)
+*Server configuration and connection testing interface*
+
+### Add URL Screen
+![Add URL Screen](screenshots/02-add-url-screen.jpg)
+*Main home screen for entering product URLs*
+
+### Product Preview
+![Product Preview](screenshots/03-product-preview.jpg)
+*Product metadata extraction and preview*
+
+### Wishlist Management
+![Wishlist Screen](screenshots/04-wishlist-screen.jpg)
+*Wishlist items with product information*
+
+### Success Message
+![Success Message](screenshots/05-success-message.jpg)
+*Confirmation when product is added to wishlist*
+
+### Deep Link Testing
+![Deep Link Test](screenshots/06-deep-link-test.jpg)
+*Testing deep link functionality in browser*
+
+### Backend Console
+![Backend Console](screenshots/07-backend-console.jpg)
+*Server console showing available IP addresses and endpoints*
+
+## Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -39,7 +70,7 @@ Centscape is a mobile application that allows users to:
     └─────────┘            └─────────┘
 ```
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend (Mobile App)
 - **React Native** with Expo
@@ -63,52 +94,52 @@ Centscape is a mobile application that allows users to:
 - **ESLint** for code quality
 - **TypeScript** compiler
 
-## ⚖️ Engineering Trade-offs
+## Engineering Trade-offs
 
 ### **Chosen Technologies & Rationale**
 
 #### **React Native + Expo**
-**✅ Pros:**
+**Pros:**
 - **Cross-platform development** - Single codebase for iOS/Android
 - **Rapid development** - Hot reload, over-the-air updates
 - **Rich ecosystem** - Extensive library support
 - **TypeScript support** - Better developer experience
 
-**❌ Trade-offs:**
+**Trade-offs:**
 - **Performance overhead** - Bridge between JS and native code
 - **Bundle size** - Larger app size compared to native
 - **Platform limitations** - Some native features require custom modules
 
 #### **Node.js + Express Backend**
-**✅ Pros:**
+**Pros:**
 - **JavaScript ecosystem** - Shared language with frontend
 - **Rapid API development** - Express.js simplicity
 - **Rich middleware ecosystem** - Security, validation, etc.
 - **Easy deployment** - Cloud platform support
 
-**❌ Trade-offs:**
+**Trade-offs:**
 - **Single-threaded** - CPU-intensive tasks can block
 - **Memory usage** - Higher compared to compiled languages
 - **Error handling** - Asynchronous nature complexity
 
 #### **Local Storage (AsyncStorage)**
-**✅ Pros:**
+**Pros:**
 - **Offline functionality** - Works without internet
 - **Fast access** - No network latency
 - **Simple implementation** - No database setup required
 
-**❌ Trade-offs:**
+**Trade-offs:**
 - **Data persistence** - Lost on app uninstall
 - **No sync** - Data doesn't sync across devices
 - **Storage limits** - Limited by device storage
 
 #### **Deep Linking**
-**✅ Pros:**
+**Pros:**
 - **Seamless UX** - Direct product addition
 - **Platform integration** - Works with external apps
 - **Marketing potential** - Shareable links
 
-**❌ Trade-offs:**
+**Trade-offs:**
 - **Platform complexity** - Different implementations per OS
 - **URL validation** - Security considerations
 - **Testing complexity** - Requires device testing
@@ -127,7 +158,7 @@ Centscape is a mobile application that allows users to:
 3. **Fallback Mechanisms** - Alternative parsing strategies
 4. **Data Export** - Backup functionality for user data
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 centscape/
@@ -168,7 +199,7 @@ centscape/
 └── README.md               # This file
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - **Node.js** (v16 or higher)
@@ -212,7 +243,7 @@ cd frontend
 npx expo start
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### Server Configuration
 1. **Start the backend server** - It will display available IP addresses
@@ -226,20 +257,20 @@ npx expo start
 ### Backend Console Output
 When you start the backend server, you'll see:
 ```
-🚀 Centscape Backend Server v1.0.0
-📍 Environment: development
-🔧 Debug mode: true
-🌐 Server running on port 3000
-🔗 Available URLs:
+Centscape Backend Server v1.0.0
+Environment: development
+Debug mode: true
+Server running on port 3000
+Available URLs:
    • Localhost: http://localhost:3000
    • Network: http://192.168.1.100:3000  ← Use this IP
-📊 Health check: http://localhost:3000/health
-📋 Version info: http://localhost:3000/version
-🔗 Server info: http://localhost:3000/server-info
-🔍 Metadata extraction: http://localhost:3000/extract-metadata
+Health check: http://localhost:3000/health
+Version info: http://localhost:3000/version
+Server info: http://localhost:3000/server-info
+Metadata extraction: http://localhost:3000/extract-metadata
 ```
 
-## 🔗 Deep Linking
+## Deep Linking
 
 ### Deep Link Format
 ```
@@ -256,7 +287,7 @@ centscape://add?url=YOUR_PRODUCT_URL
 - **Other e-commerce**: General product pages
 - **Any URL**: Will attempt metadata extraction
 
-## 🛠️ Development
+## Development
 
 ### Available Scripts
 
@@ -288,7 +319,7 @@ npm run dev        # Start with nodemon
 - **Backend**: Check console logs for request/response details
 - **Network**: Use browser dev tools for API testing
 
-## 🤖 AI Assistance Disclosure
+## AI Assistance Disclosure
 
 **Important**: This project was developed with significant assistance from **Claude AI** (Anthropic's AI coding assistant). 
 
@@ -316,11 +347,11 @@ This disclosure is provided for transparency and to acknowledge the collaborativ
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -328,7 +359,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 4. Test thoroughly
 5. Submit a pull request
 
-## 📞 Support
+## Support
 
 For support and questions:
 - Create an issue in the repository
@@ -337,4 +368,4 @@ For support and questions:
 
 ---
 
-**Built with ❤️ using React Native, Node.js, and Claude AI assistance**
+**Built with React Native, Node.js, and Claude AI assistance**
